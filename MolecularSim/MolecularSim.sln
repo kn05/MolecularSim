@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MolecularSim", "MolecularSim.vcxproj", "{6F0526FF-BF1E-487F-9FBD-1F87353A73B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F0526FF-BF1E-487F-9FBD-1F87353A73B1}.Debug|x64.ActiveCfg = Debug|x64
+		{6F0526FF-BF1E-487F-9FBD-1F87353A73B1}.Debug|x64.Build.0 = Debug|x64
+		{6F0526FF-BF1E-487F-9FBD-1F87353A73B1}.Release|x64.ActiveCfg = Release|x64
+		{6F0526FF-BF1E-487F-9FBD-1F87353A73B1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0C33F5E-AF40-4F25-83C8-9BEF55E465FF}
+	EndGlobalSection
+EndGlobal
