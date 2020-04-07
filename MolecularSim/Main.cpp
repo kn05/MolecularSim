@@ -1,28 +1,22 @@
 ﻿# include <Siv3D.hpp> // OpenSiv3D v0.4.2
 #include <Windows.h>
 
-double dt=0.1;
-double mass = 10;
-double G = 1;
+double dt=0.01;
+double mass = 100;
+double G = 100;
+double r = 10;
 
 class vec2 {
 private:
-    double x, y;
+
 
 public:
+    double x, y;
     vec2() :x(0.0), y(0.0) {}
     vec2(double x_, double y_) {
         x = x_;
         y = y_;
     }
-
-    double getx() {
-        return x;
-    }
-    double gety() {
-        return y;
-    }
-
     vec2 operator + (vec2 p) {
         double x_ = x + p.x;
         double y_ = y + p.y;
@@ -69,14 +63,15 @@ class Molecular {
 private:
 
 public:
-	Molecular() {
-
+    vec2 pos;
+    vec2 vel;
+	Molecular(vec2 pos, vec2 vel) {
+        this->pos = pos;
+        this->vel = vel;
 	};
 	void draw() {
-
+        Circle(pos.x, pos.y, r).draw();
 	};
-	Vec2 pos;
-	Vec2 vel;
 };
 
 using PVector = std::pair<std::vector<vec2>, std::vector<vec2>>;
@@ -88,21 +83,24 @@ std::vector<vec2> cal_acc(std::vector<vec2>& pos);
 
 void Main()
 {
-    std::vector<vec2> pos;
-    std::vector<vec2> vel;
-    pos.push_back(vec2(300, 400));
-    pos.push_back(vec2(400, 400));
-    vel.push_back(vec2(0, sqrt(2 * G * mass / 100)));
-    vel.push_back(vec2(0, -sqrt(2 * G * mass / 100)));
+    std::vector<Molecular> mole;
+    mole.push_back(Molecular(vec2(300, 400), vec2(0, sqrt(2 * G * mass / 100))));
+    mole.push_back(Molecular(vec2(400, 400), vec2(0, -sqrt(2 * G * mass / 100))));
 	while (System::Update())
 	{
+        std::vector<vec2> pos, vel;
         PVector t = std::make_pair(pos, vel);
+        for (auto &m : mole) {
+            m.draw();
+            pos.push_back(m.pos);
+            vel.push_back(m.vel);
+        }
 		t = rk4(pos, vel);
-        pos = t.first;
-        vel = t.second;
-        Print<< pos[1].getx() <<U" "<<pos[1].gety() ;
+        for (int i = mole.size()-1; i >= 0; i--) {
+            mole[i].pos = t.first[i];
+            mole[i].vel = t.second[i];
+        }
 	}
-
 }
 
 PVector rk4(std::vector<vec2>& pos, std::vector<vec2>& vel) {
@@ -150,7 +148,6 @@ std::vector<vec2> cal_vec(std::vector<vec2>& v0, std::vector<std::vector<vec2>>&
 }
 
 std::vector<vec2> cal_acc(std::vector<vec2>& pos) {
-    int n = pos.size();
     std::vector<vec2> acc;
     for (auto &i:pos) {
         vec2 force = vec2(0, 0);
