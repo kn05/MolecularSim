@@ -1,14 +1,15 @@
-﻿# include <Siv3D.hpp> // OpenSiv3D v0.4.2
+﻿#include <Siv3D.hpp> // OpenSiv3D v0.4.2
 #include <Windows.h>
 
-double dt=0.01;
-double mass = 100;
-double G = 100;
-double r = 10;
+double dt=0.001;
+double mass = 1;
+double sigma = 1;
+double epsilon = 50;
+double r = 1;
+
 
 class vec2 {
 private:
-
 
 public:
     double x, y;
@@ -84,14 +85,15 @@ std::vector<vec2> cal_acc(std::vector<vec2>& pos);
 void Main()
 {
     std::vector<Molecular> mole;
-    mole.push_back(Molecular(vec2(300, 400), vec2(0, sqrt(2 * G * mass / 100))));
-    mole.push_back(Molecular(vec2(400, 400), vec2(0, -sqrt(2 * G * mass / 100))));
+    mole.push_back(Molecular(vec2(397, 400), vec2(0, 0)) );
+    mole.push_back(Molecular(vec2(400, 400), vec2(0, 0)) );
 	while (System::Update())
 	{
         std::vector<vec2> pos, vel;
         PVector t = std::make_pair(pos, vel);
         for (auto &m : mole) {
             m.draw();
+            Print << m.pos.x << U" " << m.pos.y;
             pos.push_back(m.pos);
             vel.push_back(m.vel);
         }
@@ -155,8 +157,8 @@ std::vector<vec2> cal_acc(std::vector<vec2>& pos) {
             vec2 g = j - i;
             double d = g.length();
             if (d != 0) {
-                g.setlength(G * mass * mass / (d * d));
-                force = force + g;
+                g.setlength(48*epsilon*(pow(sigma/d, 12)-0.5*pow(sigma/d, 6)));
+                force = force - g;
             }
         }
         acc.push_back(force / mass);
