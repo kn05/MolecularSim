@@ -1,5 +1,6 @@
-﻿#include <Siv3D.hpp> // OpenSiv3D v0.4.2
+#include <Siv3D.hpp> // OpenSiv3D v0.4.2
 #include <Windows.h>
+#include <range/v3/all.hpp>
 
 double dt = 0.001;
 double mass = 1;
@@ -163,11 +164,10 @@ std::vector<vec2> cal_vec(std::vector<vec2> &v0, std::vector<vec2> &k, int a)
 }
 std::vector<vec2> cal_vec(std::vector<vec2> &v0, std::vector<std::vector<vec2>> &k)
 {
-    int n = v0.size();
-    std::vector<vec2> v(n);
-    for (int i = 0; i < n; i++)
+    std::vector<vec2> v;
+    for (auto&& [v_0, k0, k1, k2, k3] : ranges::views::zip(v0, k[0], k[1], k[2], k[3]);)
     {
-        v[i] = v0[i] + (k[0][i] + k[1][i] * 2 + k[2][i] * 2 + k[0][i]) * dt / 6;
+        v.push_back(v_0 + (k0 + k1 * 2 + k2 * 2 + k3) * dt / 6);
     }
     return v;
 }
